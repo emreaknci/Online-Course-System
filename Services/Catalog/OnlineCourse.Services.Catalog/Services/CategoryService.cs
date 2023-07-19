@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Driver;
+using OnlineCourse.Services.Catalog.Constants;
 using OnlineCourse.Services.Catalog.Dtos;
 using OnlineCourse.Services.Catalog.Models;
 using OnlineCourse.Services.Catalog.Settings;
@@ -27,7 +28,7 @@ namespace OnlineCourse.Services.Catalog.Services
         {
             var categories = await _categoryCollection.Find(category => true).ToListAsync();
             var mappedCategories = _mapper.Map<List<CategoryDto>>(categories);
-            return Response<List<CategoryDto>>.Success(200, mappedCategories);
+            return Response<List<CategoryDto>>.Success(200, mappedCategories, Messages.CategoriesListed);
         }
 
         public async Task<Response<CategoryDto>> CreateAsync(CategoryDto categoryDto)
@@ -36,7 +37,7 @@ namespace OnlineCourse.Services.Catalog.Services
             await _categoryCollection.InsertOneAsync(category);
 
             var mappedCategory = _mapper.Map<CategoryDto>(category);
-            return Response<CategoryDto>.Success(200, mappedCategory);
+            return Response<CategoryDto>.Success(200, mappedCategory, Messages.CategoryAdded);
         }
 
         public async Task<Response<CategoryDto>> GetByIdAsync(string id)
@@ -47,11 +48,11 @@ namespace OnlineCourse.Services.Catalog.Services
 
             if (category == null)
             {
-                return Response<CategoryDto>.Fail("Category not found", 404);
+                return Response<CategoryDto>.Fail(Messages.CategoryNotFound, 404);
             }
 
             var categoryDto = _mapper.Map<CategoryDto>(category);
-            return Response<CategoryDto>.Success(200, categoryDto);
+            return Response<CategoryDto>.Success(200, categoryDto,Messages.CategoryListed);
         }
 
     }
