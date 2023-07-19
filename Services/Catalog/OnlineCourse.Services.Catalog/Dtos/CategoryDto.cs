@@ -9,4 +9,8 @@ namespace OnlineCourse.Services.Catalog.Dtos
         public string Id{ get; set; }
         public string Name{ get; set; }
     }
+    public class CategoryCreateDto
+    {
+        public string Name { get; set; }
+    }
 }

@@ -31,9 +31,9 @@ namespace OnlineCourse.Services.Catalog.Services
             return Response<List<CategoryDto>>.Success(200, mappedCategories, Messages.CategoriesListed);
         }
 
-        public async Task<Response<CategoryDto>> CreateAsync(CategoryDto categoryDto)
+        public async Task<Response<CategoryDto>> CreateAsync(CategoryCreateDto dto)
         {
-            var category = _mapper.Map<Category>(categoryDto);
+            var category = _mapper.Map<Category>(dto);
             await _categoryCollection.InsertOneAsync(category);
 
             var mappedCategory = _mapper.Map<CategoryDto>(category);

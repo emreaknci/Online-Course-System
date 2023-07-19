@@ -34,9 +34,9 @@ namespace OnlineCourse.Services.Catalog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CategoryDto categoryDto)
+        public async Task<IActionResult> Create(CategoryCreateDto dto)
         {
-            var response = await _categoryService.CreateAsync(categoryDto);
+            var response = await _categoryService.CreateAsync(dto);
 
             return CreateActionResultInstance(response);
         }

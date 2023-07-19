@@ -9,6 +9,7 @@ namespace OnlineCourse.Services.Catalog.Mapping
         public GeneralMapping()
         {
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Category, CategoryCreateDto>().ReverseMap();
 
             CreateMap<Feature, FeatureDto>().ReverseMap();
 

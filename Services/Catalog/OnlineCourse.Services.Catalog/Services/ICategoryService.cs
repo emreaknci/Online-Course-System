@@ -7,7 +7,7 @@ namespace OnlineCourse.Services.Catalog.Services
     {
         Task<Response<List<CategoryDto>>> GetAllAsync();
 
-        Task<Response<CategoryDto>> CreateAsync(CategoryDto category);
+        Task<Response<CategoryDto>> CreateAsync(CategoryCreateDto dto);
 
         Task<Response<CategoryDto>> GetByIdAsync(string id);
     }
