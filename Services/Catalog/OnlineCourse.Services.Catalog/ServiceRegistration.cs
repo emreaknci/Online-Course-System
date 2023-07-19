@@ -10,6 +10,7 @@ namespace OnlineCourse.Services.Catalog
         public static void AddCatalogServices(this IServiceCollection services)
         {
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICourseService, CourseService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }

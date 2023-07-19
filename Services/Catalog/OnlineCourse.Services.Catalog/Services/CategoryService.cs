@@ -27,7 +27,7 @@ namespace OnlineCourse.Services.Catalog.Services
         {
             var categories = await _categoryCollection.Find(category => true).ToListAsync();
             var mappedCategories = _mapper.Map<List<CategoryDto>>(categories);
-            return Response<List<CategoryDto>>.Success(mappedCategories, 200);
+            return Response<List<CategoryDto>>.Success(200, mappedCategories);
         }
 
         public async Task<Response<CategoryDto>> CreateAsync(CategoryDto categoryDto)
@@ -36,7 +36,7 @@ namespace OnlineCourse.Services.Catalog.Services
             await _categoryCollection.InsertOneAsync(category);
 
             var mappedCategory = _mapper.Map<CategoryDto>(category);
-            return Response<CategoryDto>.Success(mappedCategory, 200);
+            return Response<CategoryDto>.Success(200, mappedCategory);
         }
 
         public async Task<Response<CategoryDto>> GetByIdAsync(string id)
@@ -51,7 +51,7 @@ namespace OnlineCourse.Services.Catalog.Services
             }
 
             var categoryDto = _mapper.Map<CategoryDto>(category);
-            return Response<CategoryDto>.Success(categoryDto, 200);
+            return Response<CategoryDto>.Success(200, categoryDto);
         }
 
     }

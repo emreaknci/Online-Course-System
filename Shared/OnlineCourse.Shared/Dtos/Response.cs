@@ -18,18 +18,19 @@ public class Response<T>
     public bool IsSuccessful { get; set; }
 
     public List<string> Errors { get; set; }
+    public string Message { get; set; }
 
     // Static Factory Method
-    public static Response<T> Success(T data, int statusCode)
+    public static Response<T> Success(int statusCode, T data = default, string message = "")
     {
-        return new Response<T> { Data = data, StatusCode = statusCode, IsSuccessful = true };
+        return new Response<T>
+        {
+            Data = data,
+            StatusCode = statusCode,
+            IsSuccessful = true,
+            Message = message
+        };
     }
-
-    public static Response<T> Success(int statusCode)
-    {
-        return new Response<T> { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
-    }
-
     public static Response<T> Fail(List<string> errors, int statusCode)
 
     {
@@ -43,7 +44,7 @@ public class Response<T>
 
     public static Response<T> Fail(string error, int statusCode)
     {
-        return new Response<T> { Errors = new List<string>() { error }, StatusCode = statusCode, IsSuccessful = false };
+      return  Fail(new List<string>() { error }, statusCode);
     }
 }
 
