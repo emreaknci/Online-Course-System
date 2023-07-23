@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineCourse.IdentityServer", "IdentityServer\OnlineCourse.IdentityServer\OnlineCourse.IdentityServer.csproj", "{DE09BA4D-83C1-4ADD-BDA6-8B47B7F1600D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PhotoStock", "PhotoStock", "{73931201-2BA0-4AC3-8293-2B37513AE811}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourse.Services.PhotoStock", "Services\PhotoStock\OnlineCourse.Services.PhotoStock\OnlineCourse.Services.PhotoStock.csproj", "{67528869-A34B-483A-8C09-CD298D79CE50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,10 @@ Global
 		{DE09BA4D-83C1-4ADD-BDA6-8B47B7F1600D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE09BA4D-83C1-4ADD-BDA6-8B47B7F1600D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE09BA4D-83C1-4ADD-BDA6-8B47B7F1600D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67528869-A34B-483A-8C09-CD298D79CE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67528869-A34B-483A-8C09-CD298D79CE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67528869-A34B-483A-8C09-CD298D79CE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67528869-A34B-483A-8C09-CD298D79CE50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +57,8 @@ Global
 		{4D628C74-D8A2-41D0-A791-82804A1C492C} = {500DA02A-8665-45CE-9D70-CFADE47C65AC}
 		{3FA5F3D6-367B-44E1-9316-EEF9514F337A} = {3AD48F7B-E0DA-4E32-BDDF-8A9AD5E781F8}
 		{DE09BA4D-83C1-4ADD-BDA6-8B47B7F1600D} = {4F60C374-5C40-4C87-A11E-E961227D972F}
+		{73931201-2BA0-4AC3-8293-2B37513AE811} = {F88EA805-B7E6-46C3-BC99-EA0226BBA6DF}
+		{67528869-A34B-483A-8C09-CD298D79CE50} = {73931201-2BA0-4AC3-8293-2B37513AE811}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B246D51-B231-48ED-B2D9-9529569E0981}
