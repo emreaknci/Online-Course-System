@@ -1,5 +1,6 @@
 Services
 	-catalogAPI		=>1111
-	-photoStock		=>2222
+	-photoStockAPI	=>2222
+	-basketAPI		=>3333
 
 IdentityServer => 5001
