@@ -4,5 +4,6 @@ Services
 	-basketAPI		=>3333
 	-discountAPI	=>4444
 	-orderAPI		=>5555
+	-paymentAPI		=>6666
 
 IdentityServer => 5001

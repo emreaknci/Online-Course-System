@@ -14,6 +14,7 @@ public static class Config
             new("resource_basket") { Scopes = { "basket_full_permission" } },
             new("resource_discount") { Scopes = { "discount_full_permission" } },
             new("resource_order") { Scopes = { "order_full_permission" } },
+            new("resource_payment") { Scopes = { "payment_full_permission" } },
             new(IdentityServerConstants.LocalApi.ScopeName)
         };
     public static IEnumerable<IdentityResource> IdentityResources =>
@@ -39,6 +40,7 @@ public static class Config
          new ("basket_full_permission","BasketAPI için full erişim"),
          new ("discount_full_permission","BasketAPI için full erişim"),
          new ("order_full_permission","OrderAPI için full erişim"),
+         new ("payment_full_permission","PaymentAPI için full erişim"),
          new (IdentityServerConstants.LocalApi.ScopeName,"IdentityServerAPI için full erişim"),
         };
 
@@ -72,10 +74,11 @@ public static class Config
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.OfflineAccess,
                     IdentityServerConstants.LocalApi.ScopeName,
-                    "roles",                    
+                    "roles",
                     "basket_full_permission" ,
                     "discount_full_permission" ,
                     "order_full_permission" ,
+                    "payment_full_permission" ,
                 },
                 AllowOfflineAccess = true,
                 AccessTokenLifetime = 3600,
