@@ -4,9 +4,13 @@ using OnlineCourse.Web.Models;
 using OnlineCourse.Web.Services;
 using OnlineCourse.Web.Services.Interfaces;
 using System.Configuration;
+using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using OnlineCourse.Web;
 using OnlineCourse.Web.Handler;
 using OnlineCourse.Web.Helpers;
+using OnlineCourse.Web.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +28,7 @@ builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 builder.Services.AddSingleton<PhotoHelper>();
 
 builder.Services.AddHttpClientServices(builder.Configuration);
-
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(CourseCreateInputValidator));
 builder.Services.AddAccessTokenManagement();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,

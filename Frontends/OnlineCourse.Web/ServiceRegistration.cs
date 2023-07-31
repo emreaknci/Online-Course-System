@@ -13,12 +13,27 @@ namespace OnlineCourse.Web
         {
             var serviceApiSettings = configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
 
-
             services.AddHttpClient<IIdentityService, IdentityService>();
+            services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
+
+            /*ResourceOwnerPasswordTokenHandler*/
+
             services.AddHttpClient<IUserService, UserService>(opt =>
             {
                 opt.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddHttpClient<IBasketService, BasketService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+
+
+
+
+
+            /*ClientCredentialTokenHandler*/
 
             services.AddHttpClient<ICatalogService, CatalogService>(opt =>
             {
@@ -30,7 +45,8 @@ namespace OnlineCourse.Web
                 opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.PhotoStock.Path}");
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
-            services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
+           
+
         }
     }
 }
