@@ -40,6 +40,7 @@ namespace OnlineCourse.Web.Controllers
             ViewBag.categoryList = new SelectList(categories, "Id", "Name");
             if (!ModelState.IsValid)
             {
+                var x = ModelState;
                 return View();
             }
             courseCreateInput.UserId = _sharedIdentityService.GetUserId;
@@ -79,7 +80,7 @@ namespace OnlineCourse.Web.Controllers
         {
             var categories = await _catalogService.GetAllCategoryAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name", courseUpdateInput.Id);
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)    
             {
                 return View();
             }
