@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineCourse.Web.Models.Basket;
+using OnlineCourse.Web.Models.Discount;
 using OnlineCourse.Web.Services.Interfaces;
 
 namespace OnlineCourse.Web.Controllers
@@ -40,6 +41,19 @@ namespace OnlineCourse.Web.Controllers
         {
             var result = await _basketService.RemoveBasketItem(courseId);
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ApplyDiscount(DiscountApplyInput discountApplyInput)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["discountError"] = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).First();
+                return RedirectToAction(nameof(Index));
+            }
+            var discountStatus = await _basketService.ApplyDiscount(discountApplyInput.Code);
+
+            TempData["discountStatus"] = discountStatus;
             return RedirectToAction(nameof(Index));
         }
 

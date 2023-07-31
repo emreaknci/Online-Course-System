@@ -10,10 +10,12 @@ namespace OnlineCourse.Web.Services
     public class BasketService:IBasketService
     {
         private readonly HttpClient _httpClient;
+        private readonly IDiscountService _discountService;
 
-        public BasketService(HttpClient httpClient)
+        public BasketService(HttpClient httpClient, IDiscountService discountService)
         {
             _httpClient = httpClient;
+            _discountService = discountService;
         }
 
         public async Task<bool> SaveOrUpdate(BasketViewModel basketViewModel)
@@ -100,6 +102,22 @@ namespace OnlineCourse.Web.Services
 
         public async Task<bool> ApplyDiscount(string discountCode)
         {
+            await CancelApplyDiscount();
+
+            var basket = await Get();
+            if (basket == null)
+            {
+                return false;
+            }
+
+            var hasDiscount = await _discountService.GetDiscount(discountCode);
+            if (hasDiscount == null)
+            {
+                return false;
+            }
+
+            basket.ApplyDiscount(hasDiscount.Code, hasDiscount.Rate);
+            await SaveOrUpdate(basket);
             return true;
         }
 
