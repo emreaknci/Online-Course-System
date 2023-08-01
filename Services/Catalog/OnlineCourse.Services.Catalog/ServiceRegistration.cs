@@ -2,6 +2,7 @@
 using OnlineCourse.Services.Catalog.Services;
 using OnlineCourse.Services.Catalog.Settings;
 using System.Reflection;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace OnlineCourse.Services.Catalog
@@ -18,6 +19,20 @@ namespace OnlineCourse.Services.Catalog
                 opt.Authority = configuration["IdentityServerURL"];
                 opt.Audience = "resource_catalog";
                 opt.RequireHttpsMetadata = false;
+            });
+            services.AddMassTransit(x =>
+            {
+
+                //default port : 5672
+                x.UsingRabbitMq((context, config) =>
+                {
+                    config.Host(configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+                });
+
             });
         }
     }

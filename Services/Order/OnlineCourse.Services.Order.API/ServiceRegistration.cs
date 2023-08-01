@@ -3,7 +3,7 @@ using System.Reflection;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourse.Services.Order.Application.Consumer;
+using OnlineCourse.Services.Order.Application.Consumers;
 using OnlineCourse.Services.Order.Application.Handlers;
 using OnlineCourse.Services.Order.Infrastructure;
 using OnlineCourse.Shared.Services;
@@ -22,11 +22,11 @@ public static class ServiceRegistration
             });
         });
 
-        services.AddMediatR(cfg=>
+        services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly));
 
         services.AddHttpContextAccessor();
-        services.AddScoped<ISharedIdentityService,SharedIdentityService>();
+        services.AddScoped<ISharedIdentityService, SharedIdentityService>();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
         {
             opt.Authority = configuration["IdentityServerURL"];
@@ -38,6 +38,7 @@ public static class ServiceRegistration
         {
 
             x.AddConsumer<CreateOrderMessageCommandConsumer>();
+            x.AddConsumer<CourseNameChangedEventConsumer>();
 
             //default port : 5672
             x.UsingRabbitMq((context, config) =>
@@ -51,6 +52,11 @@ public static class ServiceRegistration
                 config.ReceiveEndpoint("create-order-service", e =>
                 {
                     e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+                });
+
+                config.ReceiveEndpoint("course-name-changed-event-order-service", e =>
+                {
+                    e.ConfigureConsumer<CourseNameChangedEventConsumer>(context);
                 });
             });
 

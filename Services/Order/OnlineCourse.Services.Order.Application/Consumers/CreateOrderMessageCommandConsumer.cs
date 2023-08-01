@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineCourse.Services.Order.Application.Consumer
+namespace OnlineCourse.Services.Order.Application.Consumers
 {
     public class CreateOrderMessageCommandConsumer : IConsumer<CreateOrderMessageCommand>
     {
