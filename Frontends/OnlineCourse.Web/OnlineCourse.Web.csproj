@@ -18,4 +18,12 @@
     <ProjectReference Include="..\..\Shared\OnlineCourse.Shared\OnlineCourse.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Order\CheckoutHistory.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Order\CheckoutHistory.cshtml" />
+  </ItemGroup>
+
 </Project>
