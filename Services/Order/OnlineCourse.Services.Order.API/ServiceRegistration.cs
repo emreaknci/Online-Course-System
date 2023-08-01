@@ -1,7 +1,9 @@
 ﻿
 using System.Reflection;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using OnlineCourse.Services.Order.Application.Consumer;
 using OnlineCourse.Services.Order.Application.Handlers;
 using OnlineCourse.Services.Order.Infrastructure;
 using OnlineCourse.Shared.Services;
@@ -30,6 +32,28 @@ public static class ServiceRegistration
             opt.Authority = configuration["IdentityServerURL"];
             opt.Audience = "resource_order";
             opt.RequireHttpsMetadata = false;
+        });
+
+        services.AddMassTransit(x =>
+        {
+
+            x.AddConsumer<CreateOrderMessageCommandConsumer>();
+
+            //default port : 5672
+            x.UsingRabbitMq((context, config) =>
+            {
+                config.Host(configuration["RabbitMQUrl"], "/", host =>
+                {
+                    host.Username("guest");
+                    host.Password("guest");
+                });
+
+                config.ReceiveEndpoint("create-order-service", e =>
+                {
+                    e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+                });
+            });
+
         });
     }
 }
