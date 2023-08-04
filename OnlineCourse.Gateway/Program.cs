@@ -1,10 +1,15 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Values;
+using OnlineCourse.Gateway.DelegateHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile($"configuration.{builder.Environment.EnvironmentName.ToLower()}.json");
-builder.Services.AddOcelot();
+
+builder.Services.AddHttpClient<TokenExchangeDelegateHandler>();
+builder.Services.AddOcelot().AddDelegatingHandler<TokenExchangeDelegateHandler>();
+
 builder.Services.AddAuthentication()
     .AddJwtBearer("GatewayAuthenticationScheme", options =>
 {

@@ -79,9 +79,7 @@ public static class Config
                     IdentityServerConstants.LocalApi.ScopeName,
                     "roles",
                     "basket_full_permission" ,
-                    "discount_full_permission" ,
                     "order_full_permission" ,
-                    "payment_full_permission" ,
                     "gateway_full_permission"
                 },
                 AllowOfflineAccess = true,
@@ -89,6 +87,19 @@ public static class Config
                 RefreshTokenExpiration = TokenExpiration.Absolute,
                 AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
                 RefreshTokenUsage = TokenUsage.ReUse
+            },
+            new()
+            {
+                ClientName = "Token Exchange Client",
+                ClientId = "TokenExchangeClient",
+                ClientSecrets = {new Secret("secret".Sha256())},
+                AllowedGrantTypes= new []{ "urn:ietf:params:oauth:grant-type:token-exchange" },
+                AllowedScopes =
+                {
+                    "discount_full_permission",
+                    "payment_full_permission",
+                    IdentityServerConstants.StandardScopes.OpenId
+                }
             }
         };
 }
