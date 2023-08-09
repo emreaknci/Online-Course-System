@@ -1,0 +1,149 @@
+version: "2.19"
+services:
+  catalogdb:
+    container_name: onlinecourse.catalog.mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - catalogdb_volume:/data/db
+  basketdb:
+    container_name: onlinecourse.basket.redis
+    restart: always
+    ports:
+      - "6379:6379"
+  discountdb:
+    container_name: onlinecourse.discountdb.sqlserver
+    restart: always
+    ports:
+      - "4321:5432"
+    volumes:
+      - discount_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password12*
+      - POSTGRES_DB=DiscountDb
+  identitydb:
+    container_name: onlinecourse.identitydb
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - identitydb_volume:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password12*
+  orderdb:
+    container_name: onlinecourse.orderdb.sqlserver
+    restart: always
+    ports:
+      - "1444:1433"
+    volumes:
+      - orderdb_volume:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password12*
+  rabbitmq:
+    container_name: onlinecourse.rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  catalog.api:
+    container_name: onlinecourse.catalog.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQUrl=rabbitmq
+      - IdentityServerURL=http://identityserver.api
+      - DatabaseSettings:ConnectionString=mongodb://catalogdb:27017
+    ports:
+      - "1111:80"
+    depends_on:
+      - catalogdb
+  identityserver.api:
+    container_name: onlinecourse.identityserver.api
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=Server=identitydb,1433;Database=IdentityDb; User=sa; Password=Password12*"
+    ports:
+      - "5001:80"
+    depends_on:
+      - identitydb
+  basket.api:
+    container_name: onlinecourse.basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - RedisSettings:Port=6379
+      - RedisSettings:Host=basketdb
+    ports:
+      - "3333:80"
+    depends_on:
+      - basketdb
+  photostock.api:
+    container_name: onlinecourse.photostock.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+    ports:
+      - "2222:80"
+    volumes:
+      - type: bind
+        source: C:\Users\emrea\OnlineCourseSystemPhotos
+        target: /app/wwwroot/photos
+  discount.api:
+    container_name: onlinecourse.discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "ConnectionStrings:PostgreSql=User ID=admin; Password=Password12*; Server=discountdb; Port=4321;Database=discountdb;Integrated Security=true;Pooling=true"
+    ports:
+      - "4444:80"
+    depends_on:
+      - discountdb
+  payment.api:
+    container_name: onlinecourse.payment.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - RabbitMQUrl=rabbitmq
+    ports:
+      - "6666:80"
+  order.api:
+    container_name: onlinecourse.order.api
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - RabbitMQUrl=rabbitmq
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433;Database=OrderDb; User=sa; Password=Password12*;TrustServerCertificate=True"
+    ports:
+      - "5555:80"
+    depends_on:
+      - orderdb
+  gateway.api:
+    container_name: onlinecourse.gateway.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - IdentityServerURL=http://identityserver.api
+    ports:
+      - "5000:80"
+  aspnetcoremvc.web:
+    container_name: onlinecourse.aspnetcoremvc.web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceApiSettings:IdentityBaseUri=http://identityserver.api
+      - ServiceApiSettings:GatewayBaseUri=http://gateway.api
+
+    ports:
+      - "7777:80"
+    depends_on:
+      - gateway.api
+      - identityserver.api
+      - catalog.api
+      - basket.api
+      - discount.api
+      - order.api
+      - photostock.api
+      - payment.api
